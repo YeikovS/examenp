@@ -1,5 +1,4 @@
 package com.examen.examen.controller;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,15 +14,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.examen.examen.entity.*;
-import com.examen.examen.service.*;
+import com.examen.examen.entity.Empleado;
+import com.examen.examen.service.SEmpleado;
 
 @RestController
-@RequestMapping("/api/libros")
-public class LibrosController {
+@RequestMapping("/api/empleado")
+public class EmpleadoController {
 
 	@Autowired
-	private SLibros librosService;
+	private SEmpleado empleadoService;
 
 	@GetMapping("/")
 	public String get() {
@@ -32,10 +31,10 @@ public class LibrosController {
 	
 	// CREAR
 	@PostMapping("/create")
-	public ResponseEntity<Libros> save(@RequestBody Libros libro) {
+	public ResponseEntity<Empleado> save(@RequestBody Empleado empleado) {
 		try {
-			Libros l = librosService.create(libro);
-			return new ResponseEntity<>(l, HttpStatus.CREATED);
+			Empleado emp = empleadoService.create(empleado);
+			return new ResponseEntity<>(emp, HttpStatus.CREATED);
 		} catch (Exception e) {
 			// TODO: handle exception
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -44,10 +43,10 @@ public class LibrosController {
 
 	// LISTAR
 	@GetMapping("/listar")
-	public ResponseEntity<List<Libros>> list() {
+	public ResponseEntity<List<Empleado>> list() {
 		try {
-			List<Libros> list = new ArrayList<>();
-			list = librosService.readAll();
+			List<Empleado> list = new ArrayList<>();
+			list = empleadoService.readAll();
 			if (list.isEmpty()) {
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			}
@@ -60,10 +59,10 @@ public class LibrosController {
 
 	// BUSCAR {ID}
 	@GetMapping("/read/{id}")
-	public ResponseEntity<Libros> search(@PathVariable("id") long id) {
-		Libros libro = librosService.read(id);
-		if (libro.getIdlibro() > 0) {
-			return new ResponseEntity<>(libro, HttpStatus.OK);
+	public ResponseEntity<Empleado> search(@PathVariable("id") long id) {
+		Empleado empleado = empleadoService.read(id);
+		if (empleado.getIdempleado() > 0) {
+			return new ResponseEntity<>(empleado, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -73,7 +72,7 @@ public class LibrosController {
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<HttpStatus> delete(@PathVariable("id") long id) {
 		try {
-			librosService.delete(id);
+			empleadoService.delete(id);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -82,17 +81,14 @@ public class LibrosController {
 
 	// ACTUALIZAR {ID}
 	@PutMapping("/update/{id}")
-	public ResponseEntity<Libros> update(@RequestBody Libros l, @PathVariable("id") long id) {
+	public ResponseEntity<Empleado> update(@RequestBody Empleado empleado, @PathVariable("id") long id) {
 		try {
-			Libros li = librosService.read(id);
-			if (li.getIdlibro() > 0) {
-				li.setTitulo(l.getTitulo());
-				li.setPaginas(l.getPaginas());
-				li.setDescripcion(l.getDescripcion());
-				li.setAutor(l.getAutor());
-				li.setEditorial(l.getEditorial());
+			Empleado emp = empleadoService.read(id);
+			if (emp.getIdempleado() > 0) {
+				emp.setNombres(empleado.getNombres());
+				emp.setCargo(empleado.getCargo());
 
-				return new ResponseEntity<>(librosService.create(li), HttpStatus.OK);
+				return new ResponseEntity<>(empleadoService.create(emp), HttpStatus.OK);
 			} else {
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}

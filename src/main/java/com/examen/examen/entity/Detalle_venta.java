@@ -27,30 +27,20 @@ import lombok.Setter;
 @Entity
 @Setter
 @Getter
-@Table(name = "libros")
-public class Libros implements Serializable{
+@Table(name = "detalle_venta")
+public class Detalle_venta implements Serializable{
 
 	private static final long serialVersionUID = -1290834975075922123L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int idlibro;
+	private int iddetalle_venta;
 	
-	private String titulo;
-	private int paginas;
-	private String descripcion;
+	private double precio_venta;
+	private int cantidad_venta;
+	private int idventa;
+	private int idproducto;
 	
-	//Relaciones
-	
-	@ManyToOne(fetch = FetchType.LAZY , cascade = CascadeType.MERGE)
-	@JoinColumn(name = "autor_id", referencedColumnName = "idautor")
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-	private Autores autor;
-	
-	@ManyToOne(fetch = FetchType.LAZY , cascade = CascadeType.MERGE)
-	@JoinColumn(name = "editorial_id", referencedColumnName = "ideditorial")
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-	private Editoriales editorial;
-	
+	//Relaciones	
 	
 }

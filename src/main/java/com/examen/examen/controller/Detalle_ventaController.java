@@ -1,4 +1,5 @@
 package com.examen.examen.controller;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,11 +19,11 @@ import com.examen.examen.entity.*;
 import com.examen.examen.service.*;
 
 @RestController
-@RequestMapping("/api/libros")
-public class AutoresController {
+@RequestMapping("/api/detalle_venta")
+public class Detalle_ventaController {
 
 	@Autowired
-	private SAutores autoresService;
+	private SDetalle_venta detalle_ventaService;
 
 	@GetMapping("/")
 	public String get() {
@@ -31,10 +32,10 @@ public class AutoresController {
 	
 	// CREAR
 	@PostMapping("/create")
-	public ResponseEntity<Autores> save(@RequestBody Autores autor) {
+	public ResponseEntity<Detalle_venta> save(@RequestBody Detalle_venta detalle_venta) {
 		try {
-			Autores a = autoresService.create(autor);
-			return new ResponseEntity<>(a, HttpStatus.CREATED);
+			Detalle_venta det_v = detalle_ventaService.create(detalle_venta);
+			return new ResponseEntity<>(det_v, HttpStatus.CREATED);
 		} catch (Exception e) {
 			// TODO: handle exception
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -43,10 +44,10 @@ public class AutoresController {
 
 	// LISTAR
 	@GetMapping("/listar")
-	public ResponseEntity<List<Autores>> list() {
+	public ResponseEntity<List<Detalle_venta>> list() {
 		try {
-			List<Autores> list = new ArrayList<>();
-			list = autoresService.readAll();
+			List<Detalle_venta> list = new ArrayList<>();
+			list = detalle_ventaService.readAll();
 			if (list.isEmpty()) {
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			}
@@ -59,10 +60,10 @@ public class AutoresController {
 
 	// BUSCAR {ID}
 	@GetMapping("/read/{id}")
-	public ResponseEntity<Autores> search(@PathVariable("id") long id) {
-		Autores autor = autoresService.read(id);
-		if (autor.getIdautor() > 0) {
-			return new ResponseEntity<>(autor, HttpStatus.OK);
+	public ResponseEntity<Detalle_venta> search(@PathVariable("id") long id) {
+		Detalle_venta detalle_venta = detalle_ventaService.read(id);
+		if (detalle_venta.getIddetalle_venta() > 0) {
+			return new ResponseEntity<>(detalle_venta, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -72,7 +73,7 @@ public class AutoresController {
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<HttpStatus> delete(@PathVariable("id") long id) {
 		try {
-			autoresService.delete(id);
+			detalle_ventaService.delete(id);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -81,14 +82,16 @@ public class AutoresController {
 
 	// ACTUALIZAR {ID}
 	@PutMapping("/update/{id}")
-	public ResponseEntity<Autores> update(@RequestBody Autores a, @PathVariable("id") long id) {
+	public ResponseEntity<Detalle_venta> update(@RequestBody Detalle_venta detalle_venta, @PathVariable("id") long id) {
 		try {
-			Autores autor = autoresService.read(id);
-			if (autor.getIdautor() > 0) {
-				autor.setNombres(a.getNombres());
-				autor.setApellidos(a.getApellidos());
+			Detalle_venta det_v = detalle_ventaService.read(id);
+			if (det_v.getIddetalle_venta() > 0) {
+				det_v.setPrecio_venta(detalle_venta.getPrecio_venta());
+				det_v.setCantidad_venta(detalle_venta.getCantidad_venta());
+				det_v.setIdventa(detalle_venta.getIdventa());
+				det_v.setIdproducto(detalle_venta.getIdproducto());
 
-				return new ResponseEntity<>(autoresService.create(a), HttpStatus.OK);
+				return new ResponseEntity<>(detalle_ventaService.create(det_v), HttpStatus.OK);
 			} else {
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}

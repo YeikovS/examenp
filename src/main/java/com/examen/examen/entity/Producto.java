@@ -27,23 +27,20 @@ import lombok.Setter;
 @Entity
 @Setter
 @Getter
-@Table(name = "autores")
-public class Autores implements Serializable{
+@Table(name = "producto")
+public class Producto implements Serializable{
 
-	private static final long serialVersionUID = 7418479443987851042L;
+	private static final long serialVersionUID = 8739503533530437481L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int idautor;
+	private int idproducto;
 	
-	private String nombres;
-	private String apellidos;
+	private String nom_producto;
+	private String precio;
+	private String stock;
+	private int idcategoria;
 	
 	//Relaciones
 	
-	
-	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "autor")
-	@JsonIgnore
-	private List<Libros> libro = new ArrayList<>();
 }
-
-
